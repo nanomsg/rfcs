@@ -1,8 +1,7 @@
 Template Protocol
 =================
-Version 0.1
 Garrett D'Amore <garrett@damore.org>
-August 1, 2017
+v 0.1, 2017-08-01
 
 Template Protocol
 -----------------
