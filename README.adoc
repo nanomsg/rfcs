@@ -1,0 +1,29 @@
+= Scalability Protocols RFCs
+
+This repository contains RFCs for the Scalability Protocols (colloqually
+known as "nanomsg", although *nanomsg* is only the reference implementtion.)
+
+The acronym "RFC" means "request for comments", and refers in this context
+to a document detailing protocol level details in order to ensure that
+multiple implementations can be developed that are compatible.  It also
+sets the standard for "conforming" implementations, indicating what must
+and must not be done to produce compatible implementations of the protocols
+that can interoperate.
+
+== Status
+
+As of this date, all of the nanomsg protocols are to be considered in
+"draft" form, although some of the protocols have been unchanged for years.
+
+_NB: This repository is in its infancy. Many RFCs may be missing still.
+The intent is to replace the rfcs/ subdirectory of the `nanomsg` repository,
+but if a document is not hear, look there._
+
+== Process
+
+Submitting new RFCs, or updates to existing RFCs, follows the Pull-Request
+process used on github.  At this time, the maintainer of these documents
+is garrett@damore.org, who is also the principle maintainer for three of
+the existing implementations of these protocols.
+
+

@@ -1,0 +1,108 @@
+Template Protocol
+=================
+Version 0.1
+Garrett D'Amore <garrett@damore.org>
+August 1, 2017
+
+Template Protocol
+-----------------
+
+* Status: draft
+* Authors: Garrett D'Amore <garrett@damore.org>
+
+Abstract
+--------
+
+This is a template protocol that describes an SP protocol.
+There is no such protocol, this document serves only to act as a starting
+point.  Please replace this with an abstract.
+
+License
+-------
+
+Copyright (c) 2017 The Authors.
+
+This specification is licensed under the Apache License, Version 2.0
+(the "License");  you may not use file except in compliance with the License.
+You may obtain a copy of the license
+http://www.apache.org/licenses/LICENSE-2.0[online].
+
+Language
+--------
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
+
+Goals
+-----
+
+The goal of this document is to serve as a template to RFC authors.
+
+Document Format
+---------------
+
+This document is in http://asciidoc.org[AsciiDoc] format, and authors
+may use the full markup syntax.
+
+Subheader
+~~~~~~~~~
+
+A sub-header subsection.
+
+Sub-Subheader
+^^^^^^^^^^^^
+
+An even more nested header. (This is a level 3 header.)
+
+Definition List
+^^^^^^^^^^^^^^^
+
+term one::
+	The definition of term one is ....
+term two::
+	A second termi
+
+Tables
+^^^^^^
+
+[width="20%, options="header"]
+|===
+|A|B|C
+|1|2|3
+|2|3|4
+|5 2+|6 spans two columns
+|===
+
+Code
+^^^^
+
+First generic preformatted:
+----
+ int main(int argc, char **);
+----
+
+Then as C:
+[source, c]
+----
+   int main(int argc, char **argv);
+----
+
+Diagrams
+^^^^^^^^
+
+Diagrams use http://ditaa.sourceforge.net/[ditaa] syntax.
+
+
+[ditaa]
+----
+
+ +-------------+
+ | Protocol ID |
+ +-------------+
+
+ +-------+   +-----+
+ | Start |-->| End |
+ +-------+   +-----+
+----
+
