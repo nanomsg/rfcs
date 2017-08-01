@@ -1,7 +1,7 @@
 Template Protocol
 =================
 Garrett D'Amore <garrett@damore.org>
-v 0.1, 2017-08-01
+v 0.2, 2017-08-01
 
 image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
@@ -10,6 +10,7 @@ Template Protocol
 
 * Status: draft
 * Authors: Garrett D'Amore <garrett@damore.org>
+* Version: 0.2
 
 Abstract
 --------
@@ -40,6 +41,24 @@ Goals
 -----
 
 The goal of this document is to serve as a template to RFC authors.
+
+Versioning
+----------
+
+RFCs use a version number based on two decimal integer values separated
+by a decimal point, as in _major_._minor_.  The _major_ value is the
+primary version of the specification.  This number is incremented whenever
+a normative change is made to the specification.
+The _minor_ value is incremented only when non-normative changes, such
+as clarifications and error corrections are made to existing specifications.
+When a new _major_ number is assigned, the _minor_ number will be reset to
+zero.
+
+Note that the _major_ and _minor_ number are each whole numbers, and the
+total version should not be treated as a rational number.  This means that
+a version of `1.10` would represent the 10th revision to version 1, and
+is newer than version `1.9`.  This also means that a version of `1.01` is
+non-sensical, and would never be used.
 
 Document Format
 ---------------
