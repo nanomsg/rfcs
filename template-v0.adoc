@@ -1,28 +1,24 @@
-Template Protocol
-=================
+= Template Protocol
 Garrett D'Amore <garrett@damore.org>
 v 0.2, 2017-08-01
 
 image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
-Template Protocol
------------------
+== Template Protocol
 
 * Status: draft
 * Authors: Garrett D'Amore <garrett@damore.org>
 * Version: 0.2
 
-Abstract
---------
+== Abstract
 
 This is a template protocol that describes an SP protocol.
 There is no such protocol, this document serves only to act as a starting
 point.  Please replace this with an abstract.
 
-License
--------
+== License
 
-Copyright (c) 2017 The Authors.
+Copyright 2017 The Authors.
 
 This specification is licensed under the Apache License, Version 2.0
 (the "License");  you may not use this file except in compliance with the
@@ -30,20 +26,17 @@ License.
 You may obtain a copy of the license
 http://www.apache.org/licenses/LICENSE-2.0[online].
 
-Language
---------
+== Language
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
 interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
 
-Goals
------
+== Goals
 
 The goal of this document is to serve as a template to RFC authors.
 
-Versioning
-----------
+== Versioning
 
 RFCs use a version number based on two decimal integer values separated
 by a decimal point, as in _major_._minor_.  The _major_ value is the
@@ -60,32 +53,27 @@ a version of `1.10` would represent the 10th revision to version 1, and
 is newer than version `1.9`.  This also means that a version of `1.01` is
 non-sensical, and would never be used.
 
-Document Format
----------------
+== Document Format
 
 This document is in http://asciidoc.org[AsciiDoc] format, and authors
 may use the full markup syntax.
 
-Subheader
-~~~~~~~~~
+=== Subheader
 
 A sub-header subsection.
 
-Sub-Subheader
-^^^^^^^^^^^^
+==== Sub-Subheader
 
 An even more nested header. (This is a level 3 header.)
 
-Definition List
-^^^^^^^^^^^^^^^
+==== Definition List
 
 term one::
 	The definition of term one is ....
 term two::
 	A second termi
 
-Tables
-^^^^^^
+==== Tables
 
 [width="20%, options="header"]
 |===
@@ -95,8 +83,7 @@ Tables
 |5 2+|6 spans two columns
 |===
 
-Code
-^^^^
+==== Code
 
 First generic preformatted:
 ----
@@ -109,8 +96,7 @@ Then as C:
    int main(int argc, char **argv);
 ----
 
-Diagrams
-^^^^^^^^
+==== Diagrams
 
 Diagrams use http://ditaa.sourceforge.net/[ditaa] syntax.
 
@@ -126,4 +112,3 @@ Diagrams use http://ditaa.sourceforge.net/[ditaa] syntax.
  | Start |-->| End |
  +-------+   +-----+
 ----
-

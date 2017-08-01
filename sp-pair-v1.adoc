@@ -1,0 +1,211 @@
+= Pair Scalability Protocol
+Garrett D'Amore <garrett@damore.org>
+v 1.0, 2017-08-01
+
+image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+
+== Template Protocol
+
+* Status: draft
+* Authors: Garrett D'Amore <garrett@damore.org>
+* Version: 1.0
+
+== Abstract
+
+This document defines a scalability protocol used for bidirectional
+stateless communications between a pair of nodes.
+
+== License
+
+Copyright (c) 2017 The Authors.
+
+This specification is licensed under the Apache License, Version 2.0
+(the "License");  you may not use this file except in compliance with the
+License.
+You may obtain a copy of the license
+http://www.apache.org/licenses/LICENSE-2.0[online].
+
+== Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
+
+== Goals
+
+This document describes a `PAIR` protocol, which is to be used between
+a pair of nodes for message oriented but otherwise free form bidirectional
+communication between two parties.
+
+NOTE: An earlier, undocumented, version of this protocol was used in
+      http://www.nanomsg.org[nanomsg] and compatible implementation.
+      That version lacked support for the information necessary
+      to support routing or polyamorous participants -- those with multiple
+      pair relationships at once on a single logical socket.  New
+      implementations are encouraged to use this new version. +
+      The historical implementation had no support for mitigating forwarding
+      loops in complex topologies, and lacked any protocol specific header. +
+      Implementations may this protocol MAY elect to use the legacy protocol
+      instead, at the discretion of the user.
+
+== Usage Scenarios
+
+The use case for this protocol is one where a pair of potential
+peers wishes to communicate bidirectionally with little or no constraint on
+message contents, or replies.  As such this protocol itself is
+unacknowledged.  These are typical use cases:
+
+1.  One client sends and receives messages with one server.
+    This is the historical model.
+2.  Many clients send and receive messages with one server.
+    The server sends and receives messages with clients, but must identify
+    which client to which it desires to send a message.
+3.  One client sends and receives messages with many servers.  The
+    client must determine to which server it desires to send any
+    particular message.
+4.  Combining the above, many clients and many servers communicate,
+    forming a kind of mesh, but every sender identifies the intended
+    recipient explicitly.    
+
+== Head of Line Blocking
+
+Note that in the <<Usage Scenarios>> involving polyamrous relationships, since
+a single socket is being used to communicate to potentially many peers,
+we cannot use a blocking paradigm; that is we must not allow a slow peer
+to block communications with other peers.  To prevent that, when in
+polyamorous mode, the socket must act as a "best-effort" delivery,
+dropping messages (or possibly returning them to the user with an error)
+when the remote peer is unable to handle them.  (A per-peer outgoing
+configurable buffer may be used to allow some queuing to occur before
+messages are dropped.)
+
+== Best Effort Delivery
+
+Note that even in monogamous partnerships, message delivery cannot be
+guaranteed as there is no acknowledgement.  This is true even when the
+underlying transport(s) are themselves reliable, as intermediate
+routing steps may drop messages; an implementation may also fail to
+deliver messages to an application after the transport message has
+already been received.
+
+Applications which need reliable delivery may build acknowledgements
+on top of this protocol.
+
+== Underlying protocol
+
+At the transport layer, even in polyamorous mode, all of the relationships
+are peer wise and unicast; therefore this protocol can be run over any
+supported unicast transport.
+
+== Protocol Number
+
+This protocol is assigned the protocol number `17`, which represents
+major protocol number `1`, subprotocol number `1`.  (The historical version
+of the protocol used number `16`.)
+
+== Overview of the Algorithm
+
+A PAIR endpoint can be connected only to another PAIR endpoint.
+If some other peer attempts to connect to a PAIR endpoint, then
+the PAIR endpoint MUST close the underlying transport channel.
+
+== Hop-By-Hop Routing
+
+When creating more complex topologies, PAIR endpoints are
+paired in the intermediate nodes to form a forwarding component;
+we call this component a _device_.  Multiple _devices_ can be
+chained together.
+
+
+[ditaa]
+----
+   +------+   +--------+   +--------+   +------+
+   |      |-->|        |-->|        |-->|      |
+   | PAIR |   | Device |   | Device |   | PAIR |
+   |      |<--|        |<--|        |<--|      |
+   +------+   +--------+   +--------+   +------+
+----
+
+In this way, complex topologies can be built, and forwarding
+chains can be created to allow messages to pass through complex
+underlying transport boundaries in a manner that is transparent
+to the application.
+
+Each peer need only know it's own nearest partner(s).
+
+It is also possible to create _device_ implementations that
+support polyamorous relationships. In this case, the _device_
+must decide to which of several partners a message should be
+forwarded.
+
+Given the above, it is apparent that in the general case
+a polyamorous _device_ must retain enough information to
+ensure that once two remote peers are connected, the same
+peers are used for further communication.  This is necessary
+as there may be implied state in the messages sent and
+received, such that a given peer may not expect or tolerate
+a change in with which remote peer it is communication.
+
+It is possible for implementations that have more detailed knowledge
+of the application protocol(s) in use above this PAIR protocol,
+especially if those protocol(s) are known to be entirely stateless.
+In such a case, a _device_ implementation may forward a message
+however it chooses.
+
+== Peer Selection
+
+Polyamorous implementations MUST provide a means for polyamorous
+applications to choose to which particular remote peer a message
+shall be sent.  Monogamous implementation MAY offer this ability.
+In either case, if a remote peer is specified, the message MUST
+be delivered to that peer if possible; it MUST NOT be delivered
+to any other peer. In such a case implementations SHOULD provide
+an indication of a failure to send to the application.
+
+Polyamorous implementations MUST offer the ability for applications
+to determine from which remote peer a message was received, in the same
+format that would be used for sending a message to the same peer.
+
+If no peer is selected when sending a message, then the implementation
+MAY choose any peer at it's discretion.  Implementations SHOULD default
+to sending to the same peer when none is specified.  (As an exception,
+when an implementation knows that the upper protocol and applications
+are stateless, then if no peer is specified they MAY choose a remote peer
+at their own discretion.)
+
+== Loop Avoidance
+
+In order to prevent the creation of forwarding loops, a hop-count is
+added to the message header, allowing implementations to determine
+through how many intermediate _device_ nodes a message has passed.
+
+Imlementations MUST have a configurable maximum hop-count, and MUST
+discard any message which has exceeded it's hop count.  Implementations
+SHOULD NOT disconnect channels underneath though, since a given device
+peer may be polyamorous and disconnecting would potentially impact
+peers that would otherwise be unaffected.
+
+The default limit for hops SHOULD be 8.
+
+== Per Message Header
+
+Each message is prefixed with a 32-bit header.  The header consists
+of the following:
+
+[ditaa]
+----
+ +---------------------------+--------------------+
+ | Reserved (Zero) (24 bits) | Hop Count (8 bits) |
+ +---------------------------+--------------------+
+----
+
+This is a 32-bit word (big-endian) with the upper 24 bits cleared, and
+the lower 8 bits contain the current hop count. Each time the message
+is sent, the current hop count (which starts at 0) is incremented.
+Therefore every message transmitted shall have a hop-count of at least 1.
+When this value exceeds the implementation defined hop limit (see
+<<Loop Avoidance>>), it is discarded.
+
+Implementations MUST discard any message with a Hop Count of zero, since
+that may represent a wrap from 255, as well as any message where the
+reserved bits are not zero.
