@@ -1,6 +1,6 @@
 = Pair Scalability Protocol
 Garrett D'Amore <garrett@damore.org>
-v 1.0, 2017-08-01
+v 1.1, 2017-08-01
 
 image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
@@ -8,7 +8,7 @@ image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
 * Status: draft
 * Authors: Garrett D'Amore <garrett@damore.org>
-* Version: 1.0
+* Version: 1.1
 
 == Abstract
 
@@ -102,6 +102,11 @@ supported unicast transport.
 This protocol is assigned the protocol number `17`, which represents
 major protocol number `1`, subprotocol number `1`.  (The historical version
 of the protocol used number `16`.)
+
+== Protocol Name
+
+When an ASCII representation of the protocol is presented (for example
+with WebSocket transports), the name "pairv1" should be used.
 
 == Overview of the Algorithm
 
