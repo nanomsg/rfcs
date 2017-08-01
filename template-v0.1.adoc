@@ -3,10 +3,12 @@ Template Protocol
 Garrett D'Amore <garrett@damore.org>
 v 0.1, 2017-08-01
 
+image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+
 Template Protocol
 -----------------
 
-* Status: image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+* Status: draft
 * Authors: Garrett D'Amore <garrett@damore.org>
 
 Abstract
