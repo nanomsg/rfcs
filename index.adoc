@@ -9,4 +9,4 @@ layout: default
 These are RFCs (draft form) for the Scalability Protocols.
 
 * <<sp-pair-v1.adoc#,Pair Protocol Version 1>>
-* <<sp-zerotier.adoc#,ZeroTier Transport>>
+* <<sp-zerotier-v0.adoc#,ZeroTier Transport Version 0>>
