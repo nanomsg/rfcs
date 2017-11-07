@@ -1,4 +1,5 @@
 = Template Protocol
+:icons: font
 Garrett D'Amore <garrett@damore.org>
 v 0.2, 2017-08-01
 
@@ -7,8 +8,8 @@ image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 == Template Protocol
 
 * Status: draft
-* Authors: Garrett D'Amore <garrett@damore.org>
-* Version: 0.2
+* Authors: mailto:garrett@damore.org[Garrett D'Amore]
+* Version: 0.3
 
 == Abstract
 
@@ -101,7 +102,7 @@ Then as C:
 Diagrams use http://ditaa.sourceforge.net/[ditaa] syntax.
 
 
-[ditaa]
+[ditaa, "template-ditaa"]
 ----
 
  +-------------+
@@ -112,3 +113,20 @@ Diagrams use http://ditaa.sourceforge.net/[ditaa] syntax.
  | Start |-->| End |
  +-------+   +-----+
 ----
+
+==== Packet layout
+
+We use packetdiag syntax.
+
+[packetdiag,"template-packetdiag"]
+----
+{
+ colwidth = 32
+ node_height = 100
+
+0-23: Some bits
+24: Bit
+25-31: More bits
+}
+----
+
