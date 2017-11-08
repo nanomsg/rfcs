@@ -73,7 +73,7 @@ EOF
 		-bhtml5 \
 		-r asciidoctor-diagram \
 		-D ${dstrfcs} \
-		${adoc} >> ${output}
+		${adoc} -o - >> ${output}
 	chmod 0644 ${output}
 
 	if [ $? -ne 0 ]
@@ -81,8 +81,6 @@ EOF
 		echo "Failed to process $adoc !"
 		fails=yes
 	fi
-		
-
 done
 
 if [ -n "$dirty" ]
