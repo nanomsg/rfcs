@@ -184,9 +184,10 @@ represents the TCP port number used.
 
 When specifying an IPv6 address for the _host_, the address *SHALL* be
 enclosed in square backets (`[` and `]`) to avoid confusion with the final colon
-separating the IP address and the _port_.
+separating the IP address and the _port_.  For example, to specify the IPv6
+loopback address, and port 4300, the URI would be `tls+tcp://[::1]:4300`.
 
-A responder *MAY* elide the `_host_` portion, to just bind to itself,
+A responder *MAY* elide the _host_ portion, to just bind to itself,
 in which case the format will be ``tls+tcp://:__port__``.
 
 Implementations *MAY* offer the ability to specify a wild card of `*`
