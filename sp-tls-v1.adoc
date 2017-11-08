@@ -1,0 +1,216 @@
+---
+layout: default
+---
+= TLS Mapping for Scalability Protocols
+Garrett D'Amore <garrett@damore.org>
+v 1.1, 2017-11-08
+
+image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+
+== TLS Mapping for Scalability Protocols
+
+* Status: draft
+* Authors: mailto:garrett@damore.org[Garrett D'Amore]
+* Version 1.1
+
+== Abstract
+
+This document defines the https://tools.ietf.org/html/rfc5246[TLS v1.2]
+mapping for scalability protocols, where TLS is running on top of 
+https://tools.ietf.org/html/rfc793[TCP].
+
+== License
+
+Copyright 2017 mailto:garrett@damore.org[Garrett D'Amore] +
+Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV]
+
+This specification is licensed under the Apache License, Version 2.0
+(the "License");  you may not use this file except in compliance with the
+License.
+You may obtain a copy of the license
+http://www.apache.org/licenses/LICENSE-2.0[online].
+
+== Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
+
+
+== Underlying protocol
+
+This mapping should be layered directly on the top of TLS v1.2
+secured connections.  While it is possible to use TLS on top of other
+transports, this document specifically concerns itself with TLS
+running on top of TCP.
+
+Other combinations may be contemplated, and should follow the same
+details as discussed here.
+
+As when running SP over TCP directly, the TCP port number is
+determined by the application or user.
+
+Implementations *MUST NOT* support versions of TLS or SSL older than
+v1.2.  Implementations *MAY* support newer versions, and *SHOULD*
+avoid using algorithms or features removed from newer versions.
+
+Implementations *MUST NOT* use RC4 or MD5.
+
+Implementations *MUST NOT* use renegotiation. An attempt to renegotiate
+*MUST* cause the connection to be closed immediately.
+
+Certificate and key management are out of scope for this document.
+
+== Connection Initiation
+
+The first phase of connections involves setting up the TLS connection.
+The details of this are not specific to this protocol.  Implementations
+*MUST* validate remote peers using standard TLS verification methods.
+The specific validation checks, such as certificate enforcement and
+time/date checks *SHOULD* be administrator configurable.
+
+If a secure TLS connection cannot be established, then the underlying
+connection *MUST* be closed immediately.  (Each peer may apply it's own
+checks in determining whether the connection is secure or not.)
+
+As soon as the TLS connection is established, both peers *MUST* send a
+protocol header immediately.  The protocol header has the following form,
+in big-endian:
+
+[packetdiag,tls1-header]
+----
+{
+    colwidth = 32
+0-7: 0x00
+8-15: 0x53
+16-23: 0x50
+24-31: version
+32-47: type
+48-63: reserved
+}
+----
+
+The `version` field *MUST* be zero.
+
+The first three bytes are used to identify that the connection is
+being used for scalability protocols (note that in ASCII this will look
+like "\0SP"), using this version of the standard (0x0).
+
+The 16-bit `type` field corresponds to the numeric scalability
+protocol ID of the sender.  For example, a _PAIRv1_ sender would use the
+numeric value 0x11 here, corresponding to the _PAIR_ protocol version 1.
+
+The final 16-bit `reserved` field *MUST* be set to zero.
+
+After each peer sends this initial handshake message, they *MUST*
+wait until the other peers handshake message is received.
+
+Each peer *MUST* validate that the remote peer is using the same
+values for the first 32-bits, and that the `type` fields are compatible.
+Additionally the `reserved` field *MUST* be zero.
+
+If any of these validation checks, the peer *MUST* close the connection.
+No error indication is sent to the other peer.
+
+== Message Format
+
+Each SP message sent over this mapping is prefixed by a
+64-bitfootnote:[In practice no message will ever be so large as needing
+64-bits to represent the length, but in our experience a simple fixed
+width field of this size will support any conceivable future message sizes,
+and is more efficient and easier to use than a variable length field. The
+overhead of a sending several extra bytes per message is negligible for
+most practical protocols, and unlikely to even be measurable.]
+(big-endian) length, followed by the payload:
+
+[packetdiag, tls1-message]
+----
+{
+  colwidth = 32
+  0-63: payload size
+  64-95: payload ... [colheight = 3]
+}
+----
+
+The `payload size` represents the size of the `payload` field, in octets.
+
+The `payload` field may be absent, in which case the `payload size` field
+will be zero.  (This would indicate an empty message.)
+
+Sending the size in advance allows the receiver to preallocate a buffer
+large enough to hold the entire incoming message.  It also offers the
+receiver a chance to reject messages larger than it is willing to accept,
+which can be useful for avoiding certain forms of denial-of-service
+attacks.
+
+Implementations *MUST* support a configurable maximum limit on the
+received message size.  It is *RECOMMENDED* the default value for
+this be one megabyte.  Implementations *MUST* also support disabling
+this check.
+
+If an implementation choosed to reject a received message as too large,
+it *MUST* immediately close the connection.
+
+
+=== No Multiplexing
+
+While some modern protocols multiplex multiple communications channels
+over a single TCP or TLS stream, we have chosen not to do this.  Typically
+this is done to mitigate against the high cost of the 3-way TCP handshake
+used when setting up a connection.  Such approaches benefit primarily
+applications with very short-lived TCP connections.
+
+In contrast, we expect most SP applications to use longer lived
+connections. 
+
+[quote, Egon Spengler, Ghostbusters]
+____
+Don't cross the streams.
+____
+
+Protocols which multiplex multiple channels are subject to head-of-line
+blocking, where one slow channel can have a detrimental impact on others.
+Additionally, they add a great deal more complexity, and usually require
+extra data copying.
+
+== URI Format
+
+The URI scheme used to represent TLS addresses is similar
+that used for TCP.
+
+The format *SHALL* be ``tls+tcp://__host__:__port__``, where the _host_
+represents either an Internet host name, or an IP address, and the _port_
+represents the TCP port number used.
+
+When specifying an IPv6 address for the _host_, the address *SHALL* be
+enclosed in square backets (`[` and `]`) to avoid confusion with the final colon
+separating the IP address and the _port_.
+
+A responder *MAY* elide the `_host_` portion, to just bind to itself,
+in which case the format will be ``tls+tcp://:__port__``.
+
+Implementations *MAY* offer the ability to specify a wild card of `*`
+when listening to indicate that the server should listen on all locally
+configured IP addresses.
+
+Implementations *MAY* allow a _port_ number of 0 to be specified when
+listening, in which case a randomly chosen ephemeral TCP port *SHALL* be
+used.footnote:[In
+this case the implementation will need to offer a method for applications
+to determine the ephemeral TCP port number chosen.]
+
+// XXX: legacy nanomssg offers a leading interface on outgoing client
+// connections, ala tcp://<interface>;<host>:<port>.  We aren't supporting
+// this in the standard at present.  Probably we should have some way for
+// additional name-value-pairs to be supplied...
+
+== Security Considerations
+
+The correct configuration and administration of TLS is required to
+provide a channel secure from eavesdropping, modification, and replay
+attacks.  The discussion of how to do this, and the important details
+around key and certificate administration, are implementation specific
+and out of scope for this document.
+
+Denial-of-service considerations are discussed, in particular the
+use of a limit on the incoming message sizes.
