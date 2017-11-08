@@ -77,7 +77,7 @@ As soon as the TLS connection is established, both peers *MUST* send a
 protocol header immediately.  The protocol header has the following form,
 in big-endian:
 
-[packetdiag,tls1-header]
+[packetdiag,"tls1-header"]
 ----
 {
     colwidth = 32
@@ -123,7 +123,7 @@ overhead of a sending several extra bytes per message is negligible for
 most practical protocols, and unlikely to even be measurable.]
 (big-endian) length, followed by the payload:
 
-[packetdiag, tls1-message]
+[packetdiag,"tls1-message"]
 ----
 {
   colwidth = 32
