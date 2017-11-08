@@ -72,6 +72,7 @@ EOF
 		-askip-front-matter \
 		-bhtml5 \
 		-r asciidoctor-diagram \
+		-a imagesoutdir=${dstrfcs} \
 		-D ${dstrfcs} \
 		${adoc} -o - >> ${output}
 	chmod 0644 ${output}
