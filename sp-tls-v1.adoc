@@ -2,8 +2,9 @@
 layout: default
 ---
 = TLS Mapping for Scalability Protocols
+:icons:font
 Garrett D'Amore <garrett@damore.org>
-v 1.1, 2017-11-08
+v 1.2, 2017-11-17
 
 image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
@@ -11,7 +12,7 @@ image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
 
 * Status: draft
 * Authors: mailto:garrett@damore.org[Garrett D'Amore]
-* Version 1.1
+* Version 1.2
 
 == Abstract
 
@@ -22,7 +23,8 @@ https://tools.ietf.org/html/rfc793[TCP].
 == License
 
 Copyright 2017 mailto:garrett@damore.org[Garrett D'Amore] +
-Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV]
+Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV] +
+Copyright 2017 mailto:info@staysail.tech[Staysail Systems, Inc.]
 
 This specification is licensed under the Apache License, Version 2.0
 (the "License");  you may not use this file except in compliance with the
@@ -54,10 +56,30 @@ Implementations *MUST NOT* support versions of TLS or SSL older than
 v1.2.  Implementations *MAY* support newer versions, and *SHOULD*
 avoid using algorithms or features removed from newer versions.
 
-Implementations *MUST NOT* use RC4 or MD5.
+NOTE: It is our intent that when TLS v1.3 is finalized, to support, and
+possibly even mandate, the use of TLS v1.3.
+
+Implementations *MUST NOT* use RC4, DES, MD5, SHA1, or any
+algorithm in CBC (cipher-block-chaining) mode.
+This prohibition applies to both use in cipher suites and in certificates.
+
+Implementations *MUST NOT* use RSA, DSA, or DH public key algorithms
+with key lengths smaller than 1024 bits, and *SHOULD* use 2048-bit key
+lengths or larger.
 
 Implementations *MUST NOT* use renegotiation. An attempt to renegotiate
 *MUST* cause the connection to be closed immediately.
+
+Implementations *MUST NOT* use session resumption, but *MUST* instead
+open a new TCP port when creating a new session, and *MUST* close the
+underlying TCP when completing a session (after processing any
+CLOSE-NOTIFY messages.  (It is assumed that implementations will
+generally use long-lived connections, and elimination of session resumption
+leads to simpler, and therefore more secure, implementation.)
+
+Implementations *MUST NOT* use TLS layer compression, as it has been
+found to weak TLS.  (Compression *MAY* be done by the application
+in the layer above, if it is needed.)
 
 Certificate and key management are out of scope for this document.
 
@@ -178,17 +200,17 @@ extra data copying.
 The URI scheme used to represent TLS addresses is similar
 that used for TCP.
 
-The format *SHALL* be ``tls+tcp://__host__:__port__``, where the _host_
+The format *SHALL* be ``tls://__host__:__port__``, where the _host_
 represents either an Internet host name, or an IP address, and the _port_
 represents the TCP port number used.
 
 When specifying an IPv6 address for the _host_, the address *SHALL* be
 enclosed in square backets (`[` and `]`) to avoid confusion with the final colon
 separating the IP address and the _port_.  For example, to specify the IPv6
-loopback address, and port 4300, the URI would be `tls+tcp://[::1]:4300`.
+loopback address, and port 4300, the URI would be `tls://[::1]:4300`.
 
 A responder *MAY* elide the _host_ portion, to just bind to itself,
-in which case the format will be ``tls+tcp://:__port__``.
+in which case the format will be ``tls://:__port__``.
 
 Implementations *MAY* offer the ability to specify a wild card of `*`
 when listening to indicate that the server should listen on all locally
