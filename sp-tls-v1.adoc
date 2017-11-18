@@ -1,8 +1,5 @@
----
-layout: default
----
 = TLS Mapping for Scalability Protocols
-:icons:font
+:icons: font
 Garrett D'Amore <garrett@damore.org>
 v 1.2, 2017-11-17
 
