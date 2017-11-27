@@ -5,7 +5,7 @@ These are RFCs for the Scalability Protocols.
 
 == General RFCs
 
-* <<sp-status=v1.adoc#,Status Levels for SP RFCs Version 1>>
+* <<sp-status-v1.adoc#,Status Levels for SP RFCs Version 1>>
 
 == Protocol RFCs
 
