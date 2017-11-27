@@ -1,11 +1,9 @@
----
-layout: default
----
 = ZeroTier Mapping for Scalability Protocols
+:icons: font
 Garrett D'Amore <garrett@damore.org>
 v 0.8, 2017-11-07
 
-image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
 == ZeroTier Mapping for Scalability Protocols
 

@@ -3,7 +3,7 @@
 Garrett D'Amore <garrett@damore.org>
 v 0.2, 2017-08-01
 
-image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
 == Template Protocol
 

@@ -1,0 +1,129 @@
+= Status Levels for SP RFCs
+:icons: font
+Garrett D'Amore <garrett@damore.org>
+v 1.0, 2017-11-07
+
+image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
+
+== Status Levels for SP RFCs
+
+* Status: draft
+* Authors: mailto:garrett@damore.org[Garrett D'Amore]
+* Version: 1.0
+
+== Abstract
+
+This document defines the meaning of the "Status" keyword used
+to label RFC documents for the Scalability Protocols suite of
+protocols.
+
+== License
+
+Copyright 2017 mailto:info@staysail.tech[Staysail Systems, Inc.]
+
+This specification is licensed under the Apache License, Version 2.0
+(the "License");  you may not use this file except in compliance with the
+License.
+You may obtain a copy of the license
+http://www.apache.org/licenses/LICENSE-2.0[online].
+
+== Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
+
+== Goals
+
+In order to ensure compatibility across different implementations of the
+SP protocols, it is important to document the details of those protocols,
+including expected mandatory and optional behaviors.  These are documented
+in the form of RFC (Request for Comments) documents, which are posted online
+for review and reference by implementors.
+
+A document undergoes a lifetime transition.  During its early phases, the
+authors and initial implementors may be uncertain about the details of
+the protocols, and the document itself may be evolving rather quickly.
+Conversely, at some point in the near the end of a document's life time,
+a protocol may be deprecated, indicating that it should not be used by
+new implementations, or even retired entirely, where it should not be
+in use at all.
+
+Understanding the phase a document (and the protocol described) is in
+is important for potential implementors, in order to avoid certain
+development risks and set expectations for likely changes.
+
+
+== Levels
+
+[#draft]
+=== Draft image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
+
+All RFCs start life as _Draft_ status.  These may very from extremely
+preliminary documents with no existing complete implementation,
+to documents where several implementations exist, but which
+have not been sufficiently reviewed by the SP community.
+
+The yellow color in the badge serves as a warning against depending upon
+the document details too deeply.
+
+[#stable]
+=== Stable image:https://img.shields.io/badge/status-stable-brightgreen.svg?style=for-the-badge[stable]
+
+A _Stable_ RFC is one that describes a protocol which itself
+is "finished", and suitable for implementation by other
+implementors.  Additionally, the document itself must have
+been reviewed for accuracy and completeness.
+
+As a final check, there should be at least two independent
+implementations of the RFC in order to qualify for Stable
+status.
+
+The bright green badge color indicates that the document
+and the protocol are suitable for broad adoption by
+implementors.
+
+[#deprecated]
+=== Deprecated image:https://img.shields.io/badge/status-deprecated-orange.svg?style=for-the-badge[deprecated]
+
+A _Deprecated_ RFC documents a protocol that is no longer
+recommended for use by implementors. Generally, a newer
+_Stable_ RFC will document a newer protocol that should
+be used instead.
+
+However, deprecated protocols are expected to be found
+in the wild, and implementors MAY choose to implement
+them anyway for compatibility reasons.
+
+The orange status badge color serves as a warning to
+implementors that they are discouraged from
+implementing this, and should look for a newer
+protocol instead.
+
+[#retired]
+=== Retired image:https://img.shields.io/badge/status-retired-red.svg?style=for-the-badge[retired]
+
+A _Retired_ RFC is one that has been removed from
+service.
+
+Generally these RFCs document protocols that new
+implementations MUST NOT implement, and that existing
+implementations SHOULD remove from service at their
+earliest opportunity.
+
+The main motivation for retiring RFCs will be to
+cover the case where severe defects in an implementation
+exist.  For example, in the 802.11 arena, WEP would
+be a protocol that should be _Retired_, as it is
+defective in ways that are dangerous to the user.
+
+An RFC may also be retired when the protocol is
+believed to have become extinct in the wild.
+
+The purpose of keeping the retired RFCs available
+is for historical context.  It may also help some
+party in the event that they come across an actual
+implementation in the wild.
+
+The red status color should be a strong indicator
+that nobody should be using RFCs with this status.

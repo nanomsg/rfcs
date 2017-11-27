@@ -1,15 +1,15 @@
 = TLS Mapping for Scalability Protocols
 :icons: font
 Garrett D'Amore <garrett@damore.org>
-v 1.2, 2017-11-17
+v 1.3, 2017-11-27
 
-image:https://img.shields.io/badge/status-draft-yellow.svg[draft]
+image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
 == TLS Mapping for Scalability Protocols
 
 * Status: draft
 * Authors: mailto:garrett@damore.org[Garrett D'Amore]
-* Version 1.2
+* Version 1.3
 
 == Abstract
 
@@ -197,17 +197,17 @@ extra data copying.
 The URI scheme used to represent TLS addresses is similar
 that used for TCP.
 
-The format *SHALL* be ``tls://__host__:__port__``, where the _host_
+The format *SHALL* be ``tls+tcp://__host__:__port__``, where the _host_
 represents either an Internet host name, or an IP address, and the _port_
 represents the TCP port number used.
 
 When specifying an IPv6 address for the _host_, the address *SHALL* be
 enclosed in square backets (`[` and `]`) to avoid confusion with the final colon
 separating the IP address and the _port_.  For example, to specify the IPv6
-loopback address, and port 4300, the URI would be `tls://[::1]:4300`.
+loopback address, and port 4300, the URI would be `tls+tcp://[::1]:4300`.
 
 A responder *MAY* elide the _host_ portion, to just bind to itself,
-in which case the format will be ``tls://:__port__``.
+in which case the format will be ``tls+tcp://:__port__``.
 
 Implementations *MAY* offer the ability to specify a wild card of `*`
 when listening to indicate that the server should listen on all locally
@@ -219,7 +219,7 @@ used.footnote:[In
 this case the implementation will need to offer a method for applications
 to determine the ephemeral TCP port number chosen.]
 
-// XXX: legacy nanomssg offers a leading interface on outgoing client
+// XXX: legacy nanomsg offers a leading interface on outgoing client
 // connections, ala tcp://<interface>;<host>:<port>.  We aren't supporting
 // this in the standard at present.  Probably we should have some way for
 // additional name-value-pairs to be supplied...

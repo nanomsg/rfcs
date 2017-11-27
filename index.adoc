@@ -1,13 +1,17 @@
----
-title: SP Protocol RFCs
-layout: default
----
+= RFCs
 :icons: font
 
-== RFCs
+These are RFCs for the Scalability Protocols.
 
-These are RFCs (draft form) for the Scalability Protocols.
+== General RFCs
+
+* <<sp-status=v1.adoc#,Status Levels for SP RFCs Version 1>>
+
+== Protocol RFCs
 
 * <<sp-pair-v1.adoc#,Pair Protocol Version 1>>
-* <<sp-tls-v1.adoc#,TLS v1.2 Transport Version 1>>
-* <<sp-zerotier-v0.adoc#,ZeroTier Transport Version 0>>
+
+== Transport RFCs
+
+* <<sp-tls-v1.adoc#,TLS Mapping for Scalability Protocols>>
+* <<sp-zerotier-v0.adoc#,ZeroTier Mapping for Scalablity Protocols>>
