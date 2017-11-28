@@ -1,7 +1,7 @@
 = TLS Mapping for Scalability Protocols
 :icons: font
 Garrett D'Amore <garrett@damore.org>
-v 1.3, 2017-11-27
+v 1.3.1, 2017-11-28
 
 image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
@@ -9,7 +9,7 @@ image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[d
 
 * Status: draft
 * Authors: mailto:garrett@damore.org[Garrett D'Amore]
-* Version 1.3
+* Version 1.3.1
 
 == Abstract
 
@@ -138,7 +138,7 @@ Each SP message sent over this mapping is prefixed by a
 64-bits to represent the length, but in our experience a simple fixed
 width field of this size will support any conceivable future message sizes,
 and is more efficient and easier to use than a variable length field. The
-overhead of a sending several extra bytes per message is negligible for
+overhead of sending several extra bytes per message is negligible for
 most practical protocols, and unlikely to even be measurable.]
 (big-endian) length, followed by the payload:
 
