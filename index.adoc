@@ -14,4 +14,5 @@ These are RFCs for the Scalability Protocols.
 == Transport RFCs
 
 * <<sp-tls-v1.adoc#,TLS Mapping for Scalability Protocols>>
+* <<sp-websocket-v1.adoc#,WebSocket Mapping for Scalablity Protocols>>
 * <<sp-zerotier-v0.adoc#,ZeroTier Mapping for Scalablity Protocols>>

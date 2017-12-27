@@ -1,0 +1,139 @@
+= WebSocket Mapping for Scalability Protocols
+:icons: font
+Garrett D'Amore <garrett@damore.org>
+v 1.0.0, 2017-12-27
+
+image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
+
+== WebSocket Mapping for Scalability Protocols
+
+* Status: draft
+* Authors: mailto:garrett@damore.org[Garrett D'Amore]
+* Version 1.0.0
+
+== Abstract
+
+This document defines the https://tools.ietf.org/html/rfc6455[WebSocket]
+mapping for scalability protocols.
+
+== License
+
+Copyright 2017 mailto:garrett@damore.org[Garrett D'Amore] +
+Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV] +
+Copyright 2017 mailto:info@staysail.tech[Staysail Systems, Inc.]
+
+This specification is licensed under the Apache License, Version 2.0
+(the "License");  you may not use this file except in compliance with the
+License.
+You may obtain a copy of the license
+http://www.apache.org/licenses/LICENSE-2.0[online].
+
+== Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in https://tools.ietf.org/html/rfc2119[RFC 2119].
+
+
+== Underlying protocol
+
+This mapping should be layered directly on the top of WebSocket, as defined
+in https://tools.ietf.org/html/rfc6455[RFC 6455].
+
+Additionally, implementations *MUST* support BINARY frame types.  They
+*SHOULD NOT* send or accept TEXT frame types.
+
+Implementations *SHOULD* support HTTPS as the transport, and if
+they do, then they *MAY* also choose not to support HTTP.  HTTPS
+*SHOULD* be used in preference to HTTP when practical.
+
+Client implementations *MUST NOT* send entity content with their request,
+and server implementations *MUST NOT* send entity content when responding
+with a successful HTTP 101 Switching Protocols response.  (The HTTP and
+WebSocket RFCs permit such content payloads to be sent, but explicitly
+require that it be ignored if present.  It is far easier to simply
+not send the data in the first place.)  Servers receiving requests with
+content data *MUST* respond with an error code, such as 400 Bad Request.
+
+The use of the path and query parameters in the HTTP request is not
+further considered here, except to note that servers *SHOULD* use this
+data to discriminate when multiple instances or applications are made
+available at the same host and port.
+
+== Subprotocol Names
+
+Scalability Protocols uses subprotocols that are named as the individual
+protocol name appeneded with `.sp.nanomsg.org`.  For example, the
+PAIRv1 protocol (named `pair1`) has the subprotocol of `pair1.sp.nanomsg.org`.
+
+Individual protocols have their own names, but here is a list of legacy
+subprotocol names:
+
+  * `bus.sp.nanomsg.org`
+  * `pair.sp.nanomsg.org`
+  * `pub.sp.nanomsg.org`
+  * `pull.sp.nanomsg.org`
+  * `push.sp.nanomsg.org`
+  * `req.sp.nanomsg.org`
+  * `rep.sp.nanomsg.org`
+  * `respondent.sp.nanomsg.org`
+  * `sub.sp.nanomsg.org`
+  * `surveyor.sp.nanomsg.org`
+
+== Connection Initiation
+
+Connections are established using HTTP negotiation as specified in
+RFC 6455.  The HTTP client side *MUST* include a `Sec-WebSocket-Protocol`
+header that lists the desired subprotocol, which is the subprotocol
+corresponding to the server's scalability protocol.
+
+For example, a REQ client connecting to a REP server would use the
+subprotocol of `rep.sp.nanomsg.org`.
+
+== Message Format
+
+Each SP message sent over this mapping corresponds exactly to one
+WebSocket message. Implementations *MUST* properly support receive
+of messages consisting of multiple WebSocket frames.  They *MAY*
+send messages in one or more frames, but *SHOULD* avoid fragmenting
+messages unless unavoidable.  (It will often be the case that applications
+can receive a single message consisting of just a single frame with
+less effort than one consisting of multiple frames.)
+
+=== Control Frames
+
+Fragments of a multi-frame message may be interspersed with control
+frames.  Implementations *MUST* respond as quickly as practical to
+`PING` frames with the appropriate `PONG` frame.  Implementations
+*MUST* cease activity on connections after receiving a `CLOSE` frame.
+
+If an implementation chooses to reject a received message as too large,
+it *MUST* immediately send a `CLOSE` frame and shut down the connection.
+
+== URI Format
+
+The URI scheme used to represent TLS addresses is the same as that
+that used for WebSockets.
+
+Server implementations *MAY* offer the ability to specify a wild card of `*`
+for a host name indicating that when listening, all interfaces of
+the local host should be listened to, and that the `Host` HTTP header
+sent by the client during HTTP negotiation will be ignored.
+
+Server implementations *MAY* allow a _port_ number of 0 to be specified when
+listening, in which case a randomly chosen ephemeral TCP port *SHALL* be
+used.footnote:[In
+this case the implementation will need to offer a method for applications
+to determine the ephemeral TCP port number chosen.]
+
+The HTTP `Host` header sent by clients *SHALL* be the same as the host
+and port component of the URI.
+
+== Security Considerations
+
+Implementations *MAY* support TLS, and may further support
+HTTP authentication mechanisms.  The details of this are out of
+scope for this document.
+
+Denial-of-service considerations are discussed, in particular the
+use of a limit on the incoming message sizes.
