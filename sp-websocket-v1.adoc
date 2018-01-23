@@ -1,7 +1,7 @@
 = WebSocket Mapping for Scalability Protocols
 :icons: font
 Garrett D'Amore <garrett@damore.org>
-v 1.0.0, 2017-12-27
+v 1.0.1, 2018-01-22
 
 image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
@@ -9,7 +9,7 @@ image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[d
 
 * Status: draft
 * Authors: mailto:garrett@damore.org[Garrett D'Amore]
-* Version 1.0.0
+* Version 1.0.1
 
 == Abstract
 
@@ -18,9 +18,8 @@ mapping for scalability protocols.
 
 == License
 
-Copyright 2017 mailto:garrett@damore.org[Garrett D'Amore] +
-Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV] +
-Copyright 2017 mailto:info@staysail.tech[Staysail Systems, Inc.]
+Copyright 2018 mailto:info@staysail.tech[Staysail Systems, Inc.]
+Copyright 2018 mailto:info@capitar.com[Capitar IT Group BV] +
 
 This specification is licensed under the Apache License, Version 2.0
 (the "License");  you may not use this file except in compliance with the
@@ -112,7 +111,7 @@ it *MUST* immediately send a `CLOSE` frame and shut down the connection.
 
 == URI Format
 
-The URI scheme used to represent TLS addresses is the same as that
+The URI scheme used to represent is the same as that
 that used for WebSockets.
 
 Server implementations *MAY* offer the ability to specify a wild card of `*`
