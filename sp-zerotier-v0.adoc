@@ -1,7 +1,7 @@
 = ZeroTier Mapping for Scalability Protocols
 :icons: font
 Garrett D'Amore <garrett@damore.org>
-v 0.8, 2017-11-07
+v 0.9, 2018-01-22
 
 image:https://img.shields.io/badge/status-draft-yellow.svg?style=for-the-badge[draft]
 
@@ -21,8 +21,8 @@ and does not require a TCP/IP stack.
 
 == License
 
-Copyright 2017 mailto:garrett@damore.org[Garrett D'Amore] +
-Copyright 2017 mailto:info@capitar.com[Capitar IT Group BV]
+Copyright 2018 mailto:info@staysail.tech[Staysail Systems, Inc.] +
+Copyright 2018 mailto:info@capitar.com[Capitar IT Group BV]
 
 This specification is licensed under the Apache License, Version 2.0
 (the "License");  you may not use this file except in compliance with the
@@ -374,19 +374,17 @@ head-of-line blocking issues where backpressure on one consumer
 The URI scheme used to represent ZeroTier addresses makes use of
 ZeroTier IDs, ZeroTier network IDs, and our own 24-bit ports.
 
-The format *SHALL* be `zt://_nwid_/_ztid:port_`, where the `_nwid_`
+The format *SHALL* be `zt://_ztid_._nwid_:_port_`, where the `_nwid_`
 component represents the 64-bit hexadecimal ZeroTier network ID,
 the `_ztid_` represents the 40-bit hexadecimal ZeroTier Device ID,
 and the `_port_` is the 24-bit port number (decimal) previously described.
 
-A responder *MAY* elide the `/_ztid_` portion, to just bind to itself,
-in which case the format will be `zt://_nwid:port_`.
-
-A port number of 0 *MAY* be used when listening to indicate that a random
-ephemeral port should be chosen.
-
 An implementation *MAY* allow the `_ztid_` 0 be replaced with `*` to
 indicate that the node's local _ZTID_ be used.
+
+An implementation *MAY* permit the use of port number of 0 when listening,
+to indicate that a random ephemeral port should be chosen.
+
 
 // XXX: the ztid could use DNS names, generating 6PLANE IP addresses,
 // and extracting the 10 digit device id from that.  Note that there
