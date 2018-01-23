@@ -58,8 +58,8 @@ from a hash of the public key associated with the application.
 A given application may participate in multiple ZeroTier networks.
 
 Sharing of ZeroTier IDs between applications, as well as use of multiple
-_ZTID_s within a single application, as well as management of the associated
-ZeroTier-specific state is out of scope for this document.
+_ZTID_ values within a single application, as well as management of the
+associated ZeroTier-specific state is out of scope for this document.
 
 ZeroTier networks have a standard MTU of 2800 bytes, but over typical
 public networks an "optimum" MTU of 1400 bytes is used.
