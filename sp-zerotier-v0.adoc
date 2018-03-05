@@ -374,7 +374,7 @@ head-of-line blocking issues where backpressure on one consumer
 The URI scheme used to represent ZeroTier addresses makes use of
 ZeroTier IDs, ZeroTier network IDs, and our own 24-bit ports.
 
-The format *SHALL* be `zt://_ztid_._nwid_:_port_`, where the `_nwid_`
+The format *SHALL* be `zt://__ztid__.__nwid__:__port__`, where the `_nwid_`
 component represents the 64-bit hexadecimal ZeroTier network ID,
 the `_ztid_` represents the 40-bit hexadecimal ZeroTier Device ID,
 and the `_port_` is the 24-bit port number (decimal) previously described.
