@@ -15,9 +15,9 @@ that can interoperate.
 As of this date, all of the nanomsg protocols are to be considered in
 "draft" form, although some of the protocols have been unchanged for years.
 
-_NB: This repository is in its infancy. Many RFCs may be missing still.
-The intent is to replace the rfcs/ subdirectory of the `nanomsg` repository,
-but if a document is not hear, look there._
+_NOTE: This repository is in its infancy. Many RFCs may be missing still.
+The intent is to replace the `rfc/` subdirectory of the `nanomsg` repository,
+but if a document is not hear, look https://github.com/nanomsg/nanomsg/tree/master/rfc[there]._
 
 == Process
 
